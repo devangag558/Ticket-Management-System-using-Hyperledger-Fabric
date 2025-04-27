@@ -1,5 +1,0 @@
-spring:
-    cloud:
-        loadbalancer:
-            ribbon:
-                enabled: true
