@@ -1,0 +1,110 @@
+# Fabric CA server configuration file
+
+# Server config
+address: 0.0.0.0
+port: 13054
+tls:
+  enabled: "true"
+  certfile: 
+  keyfile: 
+  clientauth:
+    certfiles: []
+    type: noclientcert
+
+# CA settings
+ca:
+  certfile: 
+  keyfile: 
+  name: ca-ticket
+  reenrollignorecertexpiry: false
+  ttl: 87600h
+  expiration: 43800h
+  maxenrollments: -1
+
+
+
+csr:
+   cn: ca.ticket.com
+   names:
+      - C: US
+        ST: "North Carolina"
+        L: "Durham"
+        O: ticket.com
+        OU:
+   hosts:
+     - localhost
+     - ticket.com
+   ca:
+      expiry: 131400h
+      pathlength: 1
+
+# Database settings
+db:
+  datasource: fabric-ca-server.db
+  type: sqlite3
+  tls:
+    enabled: false
+
+# BCCSP (Blockchain Cryptographic Service Provider) settings
+bccsp:
+  default: SW
+  sw:
+    filekeystore:
+      keystore: msp/keystore
+    hash: SHA2
+    security: 256
+
+# Other server config options
+cors:
+  enabled: false
+  origins:
+  - '*'
+
+# Registry and identities config
+registry:
+  identities:
+    - name: admin
+      pass: adminpw
+      type: client
+      affiliation: ""
+      attrs:
+        hf.AffiliationMgr: true
+        hf.GenCRL: true
+        hf.IntermediateCA: true
+        hf.Registrar.Attributes: '*'
+        hf.Registrar.DelegateRoles: '*'
+        hf.Registrar.Roles: '*'
+        hf.Revoker: true
+  maxenrollments: -1
+
+# Logging and Debugging
+loglevel: debug
+debug: false
+
+cfg:
+  identities:
+    allowremove: true
+
+# Signing Profiles
+signing:
+  default:
+    expiry: 8760h
+    usage:
+      - digital signature
+  profiles:
+    ca:
+      caconstraint:
+        isca: true
+        maxpathlen: 0
+      expiry: 43800h
+      usage:
+        - cert sign
+        - crl sign
+    tls:
+      expiry: 8760h
+      usage:
+        - signing
+        - key encipherment
+        - server auth
+        - client auth
+        - key agreement

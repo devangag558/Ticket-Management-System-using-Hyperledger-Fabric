@@ -1,0 +1,198 @@
+Organizations:
+
+  - &OrdererOrg
+    Name: OrdererMSP
+    ID: OrdererMSP
+    MSPDir: crypto-config/ordererOrganizations/orderer.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.admin')"
+    
+
+  - &TicketOrg
+    Name: TicketOrgMSP
+    ID: TicketOrgMSP
+    MSPDir: crypto-config/peerOrganizations/ticket.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('TicketOrgMSP.admin', 'TicketOrgMSP.peer', 'TicketOrgMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('TicketOrgMSP.admin', 'TicketOrgMSP.peer', 'TicketOrgMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('TicketOrgMSP.admin', 'TicketOrgMSP.peer', 'TicketOrgMSP.client')"
+    MSPType: bccsp
+    NodeOUs:
+      Enable: true
+      ClientOUIdentifier:
+        Certificate: cacerts/ca.ticket.com-cert.pem
+        OrganizationalUnitIdentifier: client
+      PeerOUIdentifier:
+        Certificate: cacerts/ca.ticket.com-cert.pem
+        OrganizationalUnitIdentifier: peer
+      AdminOUIdentifier:
+        Certificate: cacerts/ca.ticket.com-cert.pem
+        OrganizationalUnitIdentifier: admin
+
+  - &TransportOrg
+    Name: TransportOrgMSP
+    ID: TransportOrgMSP
+    MSPDir: crypto-config/peerOrganizations/transport.com/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TransportOrgMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TransportOrgMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TransportOrgMSP.client')"
+    MSPType: bccsp
+    NodeOUs:
+      Enable: true
+      ClientOUIdentifier:
+        Certificate: cacerts/ca.transport.com-cert.pem
+        OrganizationalUnitIdentifier: client
+      PeerOUIdentifier:
+        Certificate: cacerts/ca.transport.com-cert.pem
+        OrganizationalUnitIdentifier: peer
+      AdminOUIdentifier:
+        Certificate: cacerts/ca.transport.com-cert.pem
+        OrganizationalUnitIdentifier: admin
+
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_0: true
+
+Application: &ApplicationDefaults
+  Organizations:
+  Policies:
+    Readers:
+      Type: Signature
+      Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TransportOrgMSP.client', 'TicketOrgMSP.admin', 'TicketOrgMSP.peer', 'TicketOrgMSP.client')"
+    Writers:
+      Type: Signature
+      Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TicketOrgMSP.admin', 'TicketOrgMSP.peer')"
+    Admins:
+      Type: Signature
+      Rule: "OR('TransportOrgMSP.admin','TicketOrgMSP.admin')"
+    LifecycleEndorsement:
+      Type: Signature
+      Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TransportOrgMSP.client', 'TicketOrgMSP.admin', 'TicketOrgMSP.peer', 'TicketOrgMSP.client')"
+    Endorsement:
+      Type: Signature
+      Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TransportOrgMSP.client', 'TicketOrgMSP.admin', 'TicketOrgMSP.peer', 'TicketOrgMSP.client')"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+  OrdererType: etcdraft
+  Addresses:
+    - orderer1.orderer.com:7050
+  EtcdRaft:
+    Consenters:
+      - Host: orderer1.orderer.com
+        Port: 7050
+        # TLS is disabled, so these fields are not needed, but must be present syntactically
+        ClientTLSCert: crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/server.crt
+        ServerTLSCert: crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/server.crt
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Admins"
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+  Capabilities:
+    <<: *OrdererCapabilities
+
+Channel: &ChannelDefaults
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: Signature
+      Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TicketOrgMSP.admin', 'TicketOrgMSP.peer')"
+    Admins:
+      Type: Signature
+      Rule: "OR('TransportOrgMSP.admin', 'TicketOrgMSP.admin')"
+    BlockValidation:
+      Type: Signature
+      Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TicketOrgMSP.admin', 'TicketOrgMSP.peer')"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+Profiles:
+
+  OrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+    Consortiums:
+      SampleConsortium:
+        Organizations:
+          - *TicketOrg
+          - *TransportOrg
+
+  ChannelProfile:
+    Consortium: SampleConsortium
+    Application:
+      Organizations:
+        - *TicketOrg
+        - *TransportOrg
+      Policies:
+        Readers:
+          Type: ImplicitMeta
+          Rule: "ANY Readers"
+        Writers:
+          Type: Signature
+          Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TicketOrgMSP.admin', 'TicketOrgMSP.peer')"
+        Admins:
+          Type: Signature
+          Rule: "OR('TransportOrgMSP.admin',  'TicketOrgMSP.admin')"
+        Endorsement:
+          Type: Signature
+          Rule: "OR('TicketOrgMSP.peer', 'TransportOrgMSP.peer')"
+      Capabilities:
+        <<: *ApplicationCapabilities
+    Policies:
+      Readers:
+        Type: ImplicitMeta
+        Rule: "ANY Readers"
+      Writers:
+        Type: Signature
+        Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TicketOrgMSP.admin', 'TicketOrgMSP.peer')"
+      Admins:
+        Type: Signature
+        Rule: "OR('TransportOrgMSP.admin', 'TicketOrgMSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('TransportOrgMSP.admin', 'TransportOrgMSP.peer', 'TransportOrgMSP.client', 'TicketOrgMSP.admin', 'TicketOrgMSP.peer', 'TicketOrgMSP.client')"

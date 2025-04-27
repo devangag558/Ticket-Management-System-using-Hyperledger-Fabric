@@ -1,0 +1,632 @@
+# version: '2'
+
+# networks:
+#   my_network:
+
+# services:
+
+#   # --------------------- Orderers ---------------------
+#   orderer1.orderer.com:
+#     container_name: orderer1.orderer.com
+#     image: hyperledger/fabric-orderer:2.5
+#     environment:
+#       - ORDERER_GENERAL_LOGLEVEL=debug
+#       - FABRIC_CFG_PATH=/etc/hyperledger/fabric
+#       - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+#       - ORDERER_GENERAL_LISTENPORT=7050
+#       - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+#       - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/orderer/msp
+#       - ORDERER_GENERAL_TLS_ENABLED=true
+#       - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/orderer/tls/server.key
+#       - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/orderer/tls/server.crt
+#       - ORDERER_GENERAL_TLS_ROOTCAS=/etc/hyperledger/orderer/tls/ca.crt
+#       - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/fabric/genesis.block
+#     command: orderer
+#     volumes:
+#       - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com:/etc/hyperledger/orderer
+#       - ./channel-artifacts/genesis.block:/etc/hyperledger/fabric/genesis.block
+#       - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+#       - /var/run/:/var/run/
+#       - ./crypto-config:/crypto-config
+#       # - ./orderer.yaml:/etc/hyperledger/fabric/orderer.yaml
+#     ports:
+#       - 7050:7050
+#     networks:
+#       - my_network
+
+#   # --------------------- Peers for TicketOrg ---------------------
+
+
+  # ca.ticket.com:
+  #   image: hyperledger/fabric-ca:1.5.15
+  #   container_name: ca.ticket.com
+  #   environment:
+  #     - FABRIC_CA_SERVER_CA_NAME=ca-ticket
+  #     - FABRIC_CA_SERVER_TLS_ENABLED=true
+  #     - FABRIC_CA_SERVER_PORT=13054
+  #     # - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:13055
+  #   ports:
+  #     - 13054:13054
+  #     # - 13055:13055
+  #   volumes:
+  #     - ./ca.ticket.com/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+  #     - ./crypto-config/fabric-ca/ticket.com:/etc/hyperledger/fabric-ca-server
+  #   networks:
+  #     - my_network
+  #   command: sh -c 'fabric-ca-server start -b admin:adminpw'
+
+#   # ca.transport.com:
+#   #   image: hyperledger/fabric-ca:1.5.15
+#   #   container_name: ca.transport.com
+#   #   environment:
+#   #     - FABRIC_CA_SERVER_CA_NAME=ca-transport
+#   #     - FABRIC_CA_SERVER_TLS_ENABLED=true
+#   #     - FABRIC_CA_SERVER_PORT=14054
+#   #     # - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:14055
+#   #   ports:
+#   #     - 14054:14054
+#   #     # - 14055:14055
+#   #   volumes:
+#   #     - ./ca.transport.com/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+#   #     - ./crypto-config/fabric-ca/transport.com:/etc/hyperledger/fabric-ca-server
+#   #   networks:
+#   #     - my_network
+#   #   command: sh -c 'fabric-ca-server start -b admin:adminpw'
+
+#   # ca.transport.com:
+#   #   image: hyperledger/fabric-ca:1.5.15
+#   #   container_name: ca.transport.com
+#   #   environment:
+#   #     - FABRIC_CA_SERVER_CA_NAME=ca-transport
+#   #     - FABRIC_CA_SERVER_TLS_ENABLED=true
+#   #     - FABRIC_CA_SERVER_PORT=14054
+#   #     - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:14055
+#   #   ports:
+#   #     - 14054:14054
+#   #     - 14055:14055
+#   #   volumes:
+#   #     - ./ca.transport.com/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+#   #     - ./crypto-config/fabric-ca/transport.com:/etc/hyperledger/fabric-ca-server
+#   #   networks:
+#   #     - my_network
+#   #   command: sh -c 'fabric-ca-server start -b admin:adminpw'
+
+#   # peer0.ticket.com:
+#   #   container_name: peer0.ticket.com
+#   #   image: hyperledger/fabric-peer:2.5
+#   #   environment:
+#   #     - CORE_PEER_ID=peer0.ticket.com
+#   #     # - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.ticket.com:7051
+#   #     # - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.ticket.com:8051,peer2.ticket.com:9051,peer3.ticket.com:10051
+#   #     - CORE_PEER_ADDRESS=peer0.ticket.com:7051
+#   #     - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+#   #     - CORE_PEER_CHAINCODEADDRESS=peer0.ticket.com:7052
+#   #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+#   #     - CORE_PEER_LOCALMSPID=TicketOrgMSP
+#   #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@ticket.com/msp
+#   #     - CORE_PEER_TLS_ENABLED=false
+#   #     # - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+#   #     # - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+#   #     # - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+#   #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_network
+#   #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+#   #   command: peer node start
+#   #   volumes:
+#   #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer0.ticket.com:/etc/hyperledger/peer
+#   #     # - ./mychannel.block:/etc/hyperledger/configtx/
+#   #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - ./crypto-config/peerOrganizations/ticket.com/users/Admin@ticket.com/msp:/etc/hyperledger/msp/users/Admin@ticket.com/msp
+#   #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer0.ticket.com/tls/ca.crt:/etc/hyperledger/msp/peer/tls/ca.crt
+#   #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+#   #     - /var/run/:/var/run/
+#   #     - ./crypto-config:/crypto-config
+
+#   #   ports:
+#   #     - 7051:7051
+#   #   networks:
+#   #     - my_network
+
+#   # peer1.ticket.com:
+#   #   container_name: peer1.ticket.com
+#   #   image: hyperledger/fabric-peer:2.5
+#   #   environment:
+#   #     - CORE_PEER_ID=peer1.ticket.com
+#   #     - CORE_PEER_ADDRESS=peer1.ticket.com:8051
+#   #     - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+#   #     # - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.ticket.com:8051
+#   #     # - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.ticket.com:7051,peer2.ticket.com:9051,peer3.ticket.com:10051
+#   #     - CORE_PEER_CHAINCODEADDRESS=peer1.ticket.com:8052
+#   #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+#   #     - CORE_PEER_LOCALMSPID=TicketOrgMSP
+#   #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@ticket.com/msp
+#   #     - CORE_PEER_TLS_ENABLED=false
+#   #     # - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+#   #     # - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+#   #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_network
+#   #     # - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+#   #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+#   #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+
+#   #   command: peer node start
+#   #   volumes:
+#   #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer1.ticket.com:/etc/hyperledger/peer
+#   #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+#   #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - ./crypto-config/peerOrganizations/ticket.com/users/Admin@ticket.com/msp:/etc/hyperledger/msp/users/Admin@ticket.com/msp
+#   #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer1.ticket.com:/etc/hyperledger/msp/peer
+#   #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+#   #     - /var/run/:/var/run/
+#   #     - ./crypto-config:/crypto-config
+
+
+#   #   ports:
+#   #     - 8051:8051
+#   #   networks:
+#   #     - my_network
+
+#   # peer2.ticket.com:
+#   #   container_name: peer2.ticket.com
+#   #   image: hyperledger/fabric-peer:2.5
+#   #   environment:
+#   #     - CORE_PEER_ID=peer2.ticket.com
+#   #     - CORE_PEER_ADDRESS=peer2.ticket.com:9051
+#   #     # - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.ticket.com:9051
+#   #     # - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.ticket.com:8051,peer0.ticket.com:7051,peer3.ticket.com:10051
+#   #     - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+#   #     - CORE_PEER_CHAINCODEADDRESS=peer2.ticket.com:9052
+#   #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+#   #     - CORE_PEER_LOCALMSPID=TicketOrgMSP
+#   #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@ticket.com/msp
+#   #     - CORE_PEER_TLS_ENABLED=false
+#   #     # - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+#   #     # - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+#   #     # - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+#   #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_network
+#   #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+#   #   command: peer node start
+#   #   volumes:
+#   #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer2.ticket.com:/etc/hyperledger/peer
+#   #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+#   #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - ./crypto-config/peerOrganizations/ticket.com/users/Admin@ticket.com/msp:/etc/hyperledger/msp/users/Admin@ticket.com/msp
+#   #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer2.ticket.com:/etc/hyperledger/msp/peer
+#   #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+#   #     - /var/run/:/var/run/
+#   #     - ./crypto-config:/crypto-config
+#   #   ports:
+#   #     - 9051:9051
+#   #   networks:
+#   #     - my_network
+
+#   # peer3.ticket.com:
+#   #   container_name: peer3.ticket.com
+#   #   image: hyperledger/fabric-peer:2.5
+#   #   environment:
+#   #     - CORE_PEER_ID=peer3.ticket.com
+#   #     - CORE_PEER_ADDRESS=peer3.ticket.com:10051
+#   #     - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+#   #     - CORE_PEER_CHAINCODEADDRESS=peer3.ticket.com:10052
+#   #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+#   #     # - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer3.ticket.com:10051
+#   #     # - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.ticket.com:8051,peer2.ticket.com:9051,peer0.ticket.com:7051
+#   #     - CORE_PEER_LOCALMSPID=TicketOrgMSP
+#   #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@ticket.com/msp
+#   #     - CORE_PEER_TLS_ENABLED=false
+#   #     # - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+#   #     # - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+#   #     # - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+#   #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+#   #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_network
+#   #   command: peer node start
+#   #   volumes:
+#   #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer3.ticket.com:/etc/hyperledger/peer
+#   #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+#   #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - ./crypto-config/peerOrganizations/ticket.com/users/Admin@ticket.com/msp:/etc/hyperledger/msp/users/Admin@ticket.com/msp
+#   #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer3.ticket.com:/etc/hyperledger/msp/peer
+#   #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+#   #     - /var/run/:/var/run/
+#   #     - ./crypto-config:/crypto-config
+#   #     - ./chaincode:/tmp/chaincode
+#   #   ports:
+#   #     - 10051:10051
+#   #   networks:
+#   #     - my_network
+
+#   # # --------------------- Peers for TransportOrg ---------------------
+
+#   # peer0.transport.com:
+#   #   container_name: peer0.transport.com
+#   #   image: hyperledger/fabric-peer:2.5
+#   #   environment:
+#   #     - CORE_PEER_ID=peer0.transport.com
+#   #     - CORE_PEER_ADDRESS=peer0.transport.com:11051
+#   #     - CORE_PEER_LISTENADDRESS=0.0.0.0:11051
+#   #     - CORE_PEER_CHAINCODEADDRESS=peer0.transport.com:11052
+#   #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:11052
+#   #     - CORE_PEER_CHAINCODE_DEPLOYTIMEOUT=300s
+#   #     - CORE_PEER_LOCALMSPID=TransportOrgMSP
+#   #     # - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.transport.com:11051
+#   #     # - CORE_PEER_GOSSIP_BOOTSTRAP=localhost:12051
+#   #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@transport.com/msp
+#   #     - CORE_PEER_TLS_ENABLED=false
+#   #     # - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+#   #     # - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+#   #     # - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+#   #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+#   #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_network
+
+#   #   command: peer node start
+#   #   volumes:
+#   #     - ./crypto-config/peerOrganizations/transport.com/peers/peer0.transport.com:/etc/hyperledger/peer
+#   #     - ./crypto-config/peerOrganizations/transport.com/users/Admin@transport.com/msp:/etc/hyperledger/msp/users/Admin@transport.com/msp
+#   #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+#   #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - ./crypto-config/peerOrganizations/transport.com/peers/peer0.transport.com:/etc/hyperledger/msp/peer
+#   #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+#   #     - /var/run/:/var/run/
+#   #     - ./crypto-config:/crypto-config
+#   #     - ./chaincode:/tmp/chaincode
+#   #     - /home/greenhat/hyperledger2/fabric-samples/Network/chaincode/ticketcontract-go:/opt/gopath/src/github.com/chaincode/ticketcontract-go
+#   #   ports:
+#   #     - 11051:11051
+#   #   networks:
+#   #     - my_network
+
+#   # peer1.transport.com:
+#   #   container_name: peer1.transport.com
+#   #   image: hyperledger/fabric-peer:2.5
+#   #   environment:
+#   #     - CORE_PEER_ID=peer1.transport.com
+#   #     - CORE_PEER_ADDRESS=peer1.transport.com:12051
+#   #     - CORE_PEER_LISTENADDRESS=0.0.0.0:12051
+#   #     - CORE_PEER_CHAINCODEADDRESS=peer1.transport.com:12052
+#   #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:12052
+#   #     - CORE_PEER_LOCALMSPID=TransportOrgMSP
+#   #     # - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.transport.com:12051
+#   #     # - CORE_PEER_GOSSIP_BOOTSTRAP=localhost:11051
+#   #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@transport.com/msp
+#   #     - CORE_PEER_TLS_ENABLED=false
+#   #     # - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+#   #     # - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+#   #     # - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+#   #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+#   #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_network
+
+#   #   command: peer node start
+#   #   volumes:
+#   #     - ./crypto-config/peerOrganizations/transport.com/peers/peer1.transport.com:/etc/hyperledger/peer
+#   #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+#   #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+#   #     - ./crypto-config/peerOrganizations/transport.com/users/Admin@transport.com/msp:/etc/hyperledger/msp/users/Admin@transport.com/msp
+#   #     - ./crypto-config/peerOrganizations/transport.com/peers/peer1.transport.com:/etc/hyperledger/msp/peer
+#   #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+#   #     - /var/run/:/var/run/
+#   #     - ./crypto-config:/crypto-config
+#   #     - ./chaincode:/tmp/chaincode
+#   #     - /home/greenhat/hyperledger2/fabric-samples/Network/chaincode/ticketcontract-go:/opt/gopath/src/github.com/chaincode/ticketcontract-go
+#   #   ports:
+#   #     - 12051:12051
+#   #   networks:
+#   #     - my_network
+
+
+version: '2'
+
+networks:
+  my_network:
+
+services:
+
+  # --------------------- Orderers ---------------------
+  # orderer1.orderer.com:
+  #   container_name: orderer1.orderer.com
+  #   image: hyperledger/fabric-orderer:2.5
+  #   environment:
+  #     - ORDERER_GENERAL_LOGLEVEL=debug
+  #     - FABRIC_CFG_PATH=/etc/hyperledger/fabric
+  #     - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+  #     - ORDERER_GENERAL_LISTENPORT=7050
+  #     - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+  #     - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/orderer/msp
+  #     - ORDERER_GENERAL_TLS_ENABLED=true
+  #     - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/orderer/tls/server.key
+  #     - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/orderer/tls/server.crt
+  #     - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/orderer/tls/ca.crt]
+  #     - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/fabric/genesis.block
+  #   command: orderer
+  #   volumes:
+  #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com:/etc/hyperledger/orderer
+  #     - ./channel-artifacts/genesis.block:/etc/hyperledger/fabric/genesis.block
+  #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+  #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+  #     - /var/run/:/var/run/
+  #     - ./crypto-config:/crypto-config
+  #     # - ./orderer.yaml:/etc/hyperledger/fabric/orderer.yaml
+  #   ports:
+  #     - 7050:7050
+  #   networks:
+  #     - my_network
+
+  ca.ticket.com:
+    image: hyperledger/fabric-ca:1.5.15
+    container_name: ca.ticket.com
+    environment:
+      - FABRIC_CA_SERVER_CA_NAME=ca-ticket
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_PORT=13054
+      # - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server/tlsca/tlsca.ticket.com-cert.pem
+      # - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server/tlsca/priv_sk
+      # - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server/tlsca/tlsca.ticket.com-cert.pem
+      # - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server/tlsca/priv_sk
+      # - FABRIC_CA_SERVER_OPERATIONS_LISTENADDRESS=0.0.0.0:13055
+    ports:
+      - 13054:13054
+      # - 13055:13055
+    volumes:
+      - ./ca.ticket.com/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+      - ./crypto-config/peerOrganizations/ticket.com:/etc/hyperledger/fabric-ca-server
+    networks:
+      - my_network
+    command: sh -c 'fabric-ca-server start -b admin:adminpw'
+
+
+  # orderer2.orderer.com:
+  #   container_name: orderer2.orderer.com
+  #   image: hyperledger/fabric-orderer:2.5
+  #   environment:
+  #     - FABRIC_CFG_PATH=/etc/hyperledger/fabric
+  #     - ORDERER_GENERAL_LOGLEVEL=debug
+  #     - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+  #     - ORDERER_GENERAL_LISTENPORT=7050
+  #     - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+  #     - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/orderer/msp
+  #     - ORDERER_GENERAL_TLS_ENABLED=true
+  #     - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/orderer/tls/server.key
+  #     - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/orderer/tls/server.crt
+  #     - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/orderer/tls/ca.crt]
+  #     - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/fabric/genesis.block
+
+  #   command: orderer
+  #   volumes:
+  #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer2.orderer.com:/etc/hyperledger/orderer
+  #     - ./channel-artifacts/genesis.block:/etc/hyperledger/fabric/genesis.block
+  #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+  #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+  #     - /var/run/:/var/run/
+  #     - ./crypto-config:/crypto-config
+  #     # - ./orderer.yaml:/etc/hyperledger/fabric/orderer.yaml
+  #   ports:
+  #     - 8050:7050
+  #   networks:
+  #     - my_shared_network
+
+  # orderer3.orderer.com:
+  #   container_name: orderer3.orderer.com
+  #   image: hyperledger/fabric-orderer:2.5
+  #   environment:
+  #     - FABRIC_CFG_PATH=/etc/hyperledger/fabric
+  #     - ORDERER_GENERAL_LOGLEVEL=debug
+  #     - ORDERER_GENERAL_LISTENADDRESS=0.0.0.0
+  #     - ORDERER_GENERAL_LISTENPORT=7050
+  #     - ORDERER_GENERAL_LOCALMSPID=OrdererMSP
+  #     - ORDERER_GENERAL_LOCALMSPDIR=/etc/hyperledger/orderer/msp
+  #     - ORDERER_GENERAL_TLS_ENABLED=true
+  #     - ORDERER_GENERAL_TLS_PRIVATEKEY=/etc/hyperledger/orderer/tls/server.key
+  #     - ORDERER_GENERAL_TLS_CERTIFICATE=/etc/hyperledger/orderer/tls/server.crt
+  #     - ORDERER_GENERAL_TLS_ROOTCAS=[/etc/hyperledger/orderer/tls/ca.crt]
+  #     - ORDERER_GENERAL_GENESISFILE=/etc/hyperledger/fabric/genesis.block
+  #   command: orderer
+  #   volumes:
+  #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer3.orderer.com:/etc/hyperledger/orderer
+  #     - ./channel-artifacts/genesis.block:/etc/hyperledger/fabric/genesis.block
+  #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+  #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+  #     - /var/run/:/var/run/
+  #     - ./crypto-config:/crypto-config
+  #     # - ./orderer.yaml:/etc/hyperledger/fabric/orderer.yaml
+  #   ports:
+  #     - 9050:7050
+  #   networks:
+  #     - my_shared_network
+
+  # --------------------- Peers for TicketOrg ---------------------
+
+
+  # ca.ticket.com:
+  #   image: hyperledger/fabric-ca:1.5.15
+  #   container_name: ca.ticket.com
+  #   environment:
+  #     - FABRIC_CA_SERVER_CA_NAME=ca-ticket
+  #     # - FABRIC_CA_SERVER_TLS_ENABLED=true
+  #     # - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca/tlsca/tlsca.ticket.com-cert.pem
+  #     # - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca/tlsca/priv_sk
+  #     - FABRIC_CA_SERVER_PORT=13054
+  #     - FABRIC_CA_SERVER_REGISTRAR_ENROLLSECRET=secret
+  #   ports:
+  #     - 13054:13054
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/ticket.com/ca:/etc/hyperledger/fabric-ca-server
+  #     - ./crypto-config/peerOrganizations/ticket.com/tlsca:/etc/hyperledger/fabric-ca/tlsca
+  #     - ./crypto-config/peerOrganizations/transport.com/ca/msp/keystore:/etc/hyperledger/fabric-ca-server/msp/keystore
+  #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+  #     - ./ca.ticket.com/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+  #     - /var/run/:/var/run/
+  #     - ./crypto-config:/crypto-config
+  #   networks:
+  #     - my_shared_network
+  #   command: sh -c 'fabric-ca-server start -b admin:adminpw'
+
+  # ca.transport.com:
+  #   image: hyperledger/fabric-ca:1.5.15
+  #   container_name: ca.transport.com
+  #   environment:
+  #     - FABRIC_CA_SERVER_CA_NAME=ca-transport
+  #     # - FABRIC_CA_SERVER_TLS_ENABLED=true
+  #     # - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca/tlsca/tlsca.transport.com-cert.pem
+  #     # - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca/tlsca/priv_sk
+  #     - FABRIC_CA_SERVER_PORT=14054
+  #     - FABRIC_CA_SERVER_REGISTRAR_ENROLLSECRET=secret
+  #   ports:
+  #     - 14054:14054
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/transport.com/ca:/etc/hyperledger/fabric-ca-server
+  #     - ./crypto-config/peerOrganizations/transport.com/tlsca:/etc/hyperledger/fabric-ca/tlsca
+  #     - ./crypto-config/peerOrganizations/transport.com/ca/msp/keystore:/etc/hyperledger/fabric-ca-server/msp/keystore
+  #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+  #     - ./ca.transport.com/fabric-ca-server-config.yaml:/etc/hyperledger/fabric-ca-server/fabric-ca-server-config.yaml
+  #     - /var/run/:/var/run/
+  #     - ./crypto-config:/crypto-config
+  #   networks:
+  #     - my_shared_network
+  #   command: sh -c 'fabric-ca-server start -b admin:adminpw'
+
+  # peer0.ticket.com:
+  #   container_name: peer0.ticket.com
+  #   image: hyperledger/fabric-peer:2.5
+  #   environment:
+  #     - CORE_PEER_ID=peer0.ticket.com
+  #     - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.ticket.com:7051
+  #     - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.ticket.com:8051,peer2.ticket.com:9051,peer3.ticket.com:10051
+  #     - CORE_PEER_ADDRESS=peer0.ticket.com:7051
+  #     - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
+  #     - CORE_PEER_CHAINCODEADDRESS=peer0.ticket.com:7052
+  #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+  #     - CORE_PEER_LOCALMSPID=TicketOrgMSP
+  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@ticket.com/msp
+  #     - CORE_PEER_TLS_ENABLED=true
+  #     - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+  #     - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+  #     - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+  #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+  #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_shared_network
+  #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+  #   command: peer node start
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer0.ticket.com:/etc/hyperledger/peer
+  #     # - ./mychannel.block:/etc/hyperledger/configtx/
+  #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+  #     - ./crypto-config/peerOrganizations/ticket.com/users/Admin@ticket.com/msp:/etc/hyperledger/msp/users/Admin@ticket.com/msp
+  #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer0.ticket.com/tls/ca.crt:/etc/hyperledger/msp/peer/tls/ca.crt
+  #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+  #     - /var/run/:/var/run/
+  #     - ./crypto-config:/crypto-config
+
+  #   ports:
+  #     - 7051:7051
+  #   networks:
+  #     - my_shared_network
+
+  # peer1.ticket.com:
+  #   container_name: peer1.ticket.com
+  #   image: hyperledger/fabric-peer:2.5
+  #   environment:
+  #     - CORE_PEER_ID=peer1.ticket.com
+  #     - CORE_PEER_ADDRESS=peer1.ticket.com:8051
+  #     - CORE_PEER_LISTENADDRESS=0.0.0.0:8051
+  #     - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.ticket.com:8051
+  #     - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.ticket.com:7051,peer2.ticket.com:9051,peer3.ticket.com:10051
+  #     - CORE_PEER_CHAINCODEADDRESS=peer1.ticket.com:8052
+  #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:8052
+  #     - CORE_PEER_LOCALMSPID=TicketOrgMSP
+  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@ticket.com/msp
+  #     - CORE_PEER_TLS_ENABLED=true
+  #     - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+  #     - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+  #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_shared_network
+  #     - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+  #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+  #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+
+  #   command: peer node start
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer1.ticket.com:/etc/hyperledger/peer
+  #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+  #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+  #     - ./crypto-config/peerOrganizations/ticket.com/users/Admin@ticket.com/msp:/etc/hyperledger/msp/users/Admin@ticket.com/msp
+  #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer1.ticket.com:/etc/hyperledger/msp/peer
+  #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+  #     - /var/run/:/var/run/
+  #     - ./crypto-config:/crypto-config
+
+
+  #   ports:
+  #     - 8051:8051
+  #   networks:
+  #     - my_shared_network
+
+  # peer2.ticket.com:
+  #   container_name: peer2.ticket.com
+  #   image: hyperledger/fabric-peer:2.5
+  #   environment:
+  #     - CORE_PEER_ID=peer2.ticket.com
+  #     - CORE_PEER_ADDRESS=peer2.ticket.com:9051
+  #     - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer2.ticket.com:9051
+  #     - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.ticket.com:8051,peer0.ticket.com:7051,peer3.ticket.com:10051
+  #     - CORE_PEER_LISTENADDRESS=0.0.0.0:9051
+  #     - CORE_PEER_CHAINCODEADDRESS=peer2.ticket.com:9052
+  #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:9052
+  #     - CORE_PEER_LOCALMSPID=TicketOrgMSP
+  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@ticket.com/msp
+  #     - CORE_PEER_TLS_ENABLED=true
+  #     - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+  #     - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+  #     - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+  #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+  #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_shared_network
+  #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+  #   command: peer node start
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer2.ticket.com:/etc/hyperledger/peer
+  #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+  #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+  #     - ./crypto-config/peerOrganizations/ticket.com/users/Admin@ticket.com/msp:/etc/hyperledger/msp/users/Admin@ticket.com/msp
+  #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer2.ticket.com:/etc/hyperledger/msp/peer
+  #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+  #     - /var/run/:/var/run/
+  #     - ./crypto-config:/crypto-config
+  #   ports:
+  #     - 9051:9051
+  #   networks:
+  #     - my_shared_network
+
+  # peer3.ticket.com:
+  #   container_name: peer3.ticket.com
+  #   image: hyperledger/fabric-peer:2.5
+  #   environment:
+  #     - CORE_PEER_ID=peer3.ticket.com
+  #     - CORE_PEER_ADDRESS=peer3.ticket.com:10051
+  #     - CORE_PEER_LISTENADDRESS=0.0.0.0:10051
+  #     - CORE_PEER_CHAINCODEADDRESS=peer3.ticket.com:10052
+  #     - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:10052
+  #     - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer3.ticket.com:10051
+  #     - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.ticket.com:8051,peer2.ticket.com:9051,peer0.ticket.com:7051
+  #     - CORE_PEER_LOCALMSPID=TicketOrgMSP
+  #     - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@ticket.com/msp
+  #     - CORE_PEER_TLS_ENABLED=true
+  #     - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/peer/tls/server.crt
+  #     - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/peer/tls/server.key
+  #     - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/msp/peer/tls/ca.crt
+  #     - ORDERER_CA=/etc/hyperledger/msp/orderer/tls/ca.crt
+  #     - CORE_CHAINCODE_EXECUTETIMEOUT=300s
+  #     - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_my_shared_network
+  #   command: peer node start
+  #   volumes:
+  #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer3.ticket.com:/etc/hyperledger/peer
+  #     # - ./mychannel.block:/etc/hyperledger/configtx/mychannel.block
+  #     - ./crypto-config/ordererOrganizations/orderer.com/orderers/orderer1.orderer.com/tls/ca.crt:/etc/hyperledger/msp/orderer/tls/ca.crt
+  #     - ./crypto-config/peerOrganizations/ticket.com/users/Admin@ticket.com/msp:/etc/hyperledger/msp/users/Admin@ticket.com/msp
+  #     - ./crypto-config/peerOrganizations/ticket.com/peers/peer3.ticket.com:/etc/hyperledger/msp/peer
+  #     - ./channel-artifacts/channel.tx:/etc/hyperledger/configtx/channel.tx
+  #     - /var/run/:/var/run/
+  #     - ./crypto-config:/crypto-config
+  #     - ./chaincode:/tmp/chaincode
+  #   ports:
+  #     - 10051:10051
+  #   networks:
+  #     - my_shared_network

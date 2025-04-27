@@ -1,0 +1,81 @@
+# OrdererOrgs:
+#   - Name: Orderer
+#     Domain: orderer.com
+#     Specs:
+#       - Hostname: orderer1
+#       - Hostname: orderer2
+#       - Hostname: orderer3
+
+# PeerOrgs:
+#   - Name: TicketOrg
+#     Domain: ticket.com
+#     EnableNodeOUs: true
+#     Template:
+#       Count: 4
+#     Users:
+#       Count: 1
+
+#   - Name: TransportOrg
+#     Domain: transport.com
+#     EnableNodeOUs: true
+#     Template:
+#       Count: 2
+#     Users:
+#       Count: 1
+
+OrdererOrgs:
+  - Name: Orderer
+    Domain: orderer.com
+    Specs:
+      - Hostname: orderer1
+      # - Hostname: orderer2
+      # - Hostname: orderer3
+
+# PeerOrgs:
+#   - Name: TicketOrg
+#     Domain: ticket.com
+#     EnableNodeOUs: true
+#     Template:
+#       Count: 4
+#     Users:
+#       Count: 5
+#     CA:
+#       Name: ca.ticket.com
+#       TLS:
+#         Enabled: True
+        # TLS related settings
+        # Certfile: tls-cert.pem
+        # Keyfile: tls-key.pem
+        # The certificate authority will generate these TLS certificates
+      # FabricCAServer:
+      #   # This configures the fabric CA server itself
+      #   Keyfile: fabric-ca-key.pem
+      #   Certfile: fabric-ca-cert.pem
+    # AnchorPeers:
+    #   - Host: peer0.ticket.com
+    #     Port: 7051
+
+    
+
+  # - Name: TransportOrg
+  #   Domain: transport.com
+  #   EnableNodeOUs: true
+  #   Template:
+  #     Count: 2
+  #   Users:
+  #     Count: 2
+  #   CA:
+  #     Name: ca.transport.com
+  #     TLS:
+  #       Enabled: True
+    #     # TLS related settings
+    #     Certfile: tls-cert.pem
+    #     Keyfile: tls-key.pem
+    #     # The certificate authority will generate these TLS certificates
+    #   FabricCAServer:
+    #     # This configures the fabric CA server itself
+    #     Keyfile: fabric-ca-key.pem
+    #     Certfile: fabric-ca-cert.pem
+    # AnchorPeers:
+    #   - Host: peer0.transport.com
+    #     Port: 11051
