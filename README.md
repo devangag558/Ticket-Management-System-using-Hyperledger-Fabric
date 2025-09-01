@@ -23,9 +23,6 @@ make sure you are inside folder devang
 cd backend/login/registersp/target
 ```
 Then Run
-```bash
-java -jar your-app-name-version.jar
-```
 
 ```bash
 java -jar fabric-client-0.0.1-SNAPSHOT.jar
